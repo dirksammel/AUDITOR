@@ -27,7 +27,7 @@ auditor:
   
 summary_fields:
   mandatory:
-    NormalisedWallDuration: !NormalisedWallDurationField
+    NormalisedWallDuration: !NormalisedField
       score:
         name: hepscore23
         component_name: Cores
@@ -70,7 +70,7 @@ summary_fields:
 
 individual_job_fields:
   mandatory:
-    NormalisedWallDuration: !NormalisedWallDurationField
+    NormalisedWallDuration: !NormalisedField
       score:
         name: hepscore23
         component_name: Cores

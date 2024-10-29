@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Breaking changes
+- Apel plugin: Remove `NormalisedWallDurationField` class
 
 ### Security
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTCondor collector: Fix config check for entries which do not contain a `name` field (#1021) ([@rfvc](https://github.com/rfvc))
 - Apel plugin: Improved error messages when fetching security tokens ([@maxfischer2781](https://github.com/maxfischer2781))
 - Kubernetes collector: Move dependencies to workspace level, add meta information to Cargo.toml, add release instruction ([@dirksammel](https://github.com/dirksammel))
+- CI: Add tests for Python 3.13 ([@dirksammel](https://github.com/dirksammel))
 
 ### Removed
 
@@ -79,7 +81,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - CI: Add checks for import sorting and formatting to python linting workflow ([@dirksammel](https://github.com/dirksammel))
-- CI: Add tests for Python 3.13 ([@dirksammel](https://github.com/dirksammel))
 
 ### Changed
 - Dependencies: Update black from 24.4.2 to 24.10.0 ([@dirksammel](https://github.com/dirksammel))
