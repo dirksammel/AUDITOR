@@ -1,0 +1,48 @@
+name: build-pyauditor-rpm
+
+on:
+  workflow_call:
+
+jobs:
+  build-pyauditor-rpm:
+    runs-on: ubuntu-latest
+    container: almalinux:9
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download pyauditor source
+        uses: actions/download-artifact@v4
+        with:
+          name: pyauditor-wheels-source
+
+      - name: Set up toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+          
+      - name: Install build dependencies
+        run: |
+          dnf install -y 'dnf-command(config-manager)'
+          dnf config-manager --set-enabled crb
+          dnf install -y epel-release
+          dnf install -y rpm-build rpmdevtools gcc make pip python3-devel pyproject-rpm-macros python3-tomli which
+
+      - name: Set up RPM build environment
+        run: |
+          rpmdev-setuptree
+
+      - name: Copy spec file and sources
+        run: |
+          cp rpm/python-auditor.spec ~/rpmbuild/SPECS/
+          cp *.gz ~/rpmbuild/SOURCES/
+
+      - name: Build RPM
+        run: |
+          rpmbuild -ba ~/rpmbuild/SPECS/python-auditor.spec
+
+      - name: Upload RPM
+        uses: actions/upload-artifact@v4
+        with:
+          path: ~/rpmbuild/RPMS/x86_64
+          name: pyauditor-rpm

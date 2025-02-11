@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 ### Added
+- RPMs: Added RPM for pyauditor ([@dirksammel](https://github.com/dirksammel))
 
 ### Changed
 - Dependencies: Update black from 24.10.0 to 25.1.0 ([@dirksammel](https://github.com/dirksammel))
