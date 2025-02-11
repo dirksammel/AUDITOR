@@ -770,35 +770,9 @@ See below for all currently available collectors.
 
 The APEL plugin creates messages and sends them to the APEL server. The plugin can either create `summary messages` for the current month, or `individual job messages`. `Sync messages` for the current month are created in both cases.
 
-The plugin is provided as a [pip package](https://pypi.org/project/auditor-apel-plugin/) and as a Docker container from [Docker Hub](https://hub.docker.com/r/aluschumacher/auditor-apel-plugin) or from the [GitHub Container Registry](https://github.com/ALU-Schumacher/AUDITOR/pkgs/container/auditor-apel-plugin).
+The plugin is provided as a [pip package](https://pypi.org/project/auditor-apel-plugin/), as a Docker container from [Docker Hub](https://hub.docker.com/r/aluschumacher/auditor-apel-plugin) or from the [GitHub Container Registry](https://github.com/ALU-Schumacher/AUDITOR/pkgs/container/auditor-apel-plugin), or as a rpm from the [GitHub Release page](https://github.com/ALU-Schumacher/AUDITOR/releases).
 
-Two CLI commands are available after the installation via `pip`: `auditor-apel-publish` and `auditor-apel-republish`.
-
-`auditor-apel-publish` runs periodically at a given report interval.
-
-```bash
-usage: auditor-apel-publish [-h] -c CONFIG
-
-options:
-  -h, --help            show this help message and exit
-  -c CONFIG, --config CONFIG
-                        Path to the config file
-```
-
-`auditor-apel-republish` runs once and submits a report of jobs between two dates for a given site.
-
-```bash
-usage: auditor-apel-republish [-h] --begin-date BEGIN_DATE --end-date END_DATE -s SITE -c CONFIG
-
-options:
-  -h, --help            show this help message and exit
-  --begin-date BEGIN_DATE
-                        Begin of republishing (UTC): yyyy-mm-dd hh:mm:ss+00:00, e.g. 2023-11-27 13:31:10+00:00
-  --end-date END_DATE   End of republishing (UTC): yyyy-mm-dd hh:mm:ss+00:00, e.g. 2023-11-29 21:10:54+00:00
-  -s SITE, --site SITE  Site (GOCDB): UNI-FREIBURG, ...
-  -c CONFIG, --config CONFIG
-                        Path to the config file
-```
+### Config
 
 The config file is written in YAML format and has the main sections `plugin`, `site`, `messaging`, `auditor`, and one of `summary_fields` or `individual_job_fields`.
 
@@ -994,6 +968,38 @@ Different field types are available, depending on the source of the value that i
 
 `NormalisedWallDurationField` has the parameter `score`, which is a `ScoreField`. The value of the score is multiplied with the `runtime` of the AUDITOR record.
 
+### pip
+
+Two CLI commands are available after the installation via `pip`: `auditor-apel-publish` and `auditor-apel-republish`.
+
+`auditor-apel-publish` runs periodically at a given report interval.
+
+```bash
+usage: auditor-apel-publish [-h] -c CONFIG
+
+options:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        Path to the config file
+```
+
+`auditor-apel-republish` runs once and submits a report of jobs between two dates for a given site.
+
+```bash
+usage: auditor-apel-republish [-h] --begin-date BEGIN_DATE --end-date END_DATE -s SITE -c CONFIG
+
+options:
+  -h, --help            show this help message and exit
+  --begin-date BEGIN_DATE
+                        Begin of republishing (UTC): yyyy-mm-dd hh:mm:ss+00:00, e.g. 2023-11-27 13:31:10+00:00
+  --end-date END_DATE   End of republishing (UTC): yyyy-mm-dd hh:mm:ss+00:00, e.g. 2023-11-29 21:10:54+00:00
+  -s SITE, --site SITE  Site (GOCDB): UNI-FREIBURG, ...
+  -c CONFIG, --config CONFIG
+                        Path to the config file
+```
+
+### Docker
+
 When using the Docker container, `auditor-apel-publish` for example can be started with
 
 ```bash
@@ -1007,6 +1013,10 @@ time_json_path: time.json
 client_cert: hostcert.pem
 client_key: hostkey.pem
 ```
+
+### rpm
+
+The rpm will install a virtual environment including all dependecnies in `/opt/auditor_apel_plugin`. After installation, a unit file is available at `/etc/systemd/system/auditor_apel_plugin.service`. This service runs the command `auditor-apel-publish` and expects a config file at `/opt/auditor_apel_plugin/auditor_apel_plugin.yml`. An example config file is available at this location, but this needs to be adjusted. You can also modify the unit file to your liking at e.g. change the location of the config file. You can republish your data with `/opt/auditor_apel_plugin/venv/bin/auditor-apel-republish`.
 
 ## Priority Plugin
 
