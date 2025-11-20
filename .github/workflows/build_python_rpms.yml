@@ -9,13 +9,16 @@ on:
 
 jobs:
   build-apel-plugin-rpm:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/apel
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: check gcc
+        run: ldd --version
 
       - name: Setup python
         uses: actions/setup-python@v6
