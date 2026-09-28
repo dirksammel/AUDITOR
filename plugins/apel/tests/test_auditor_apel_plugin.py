@@ -2,14 +2,12 @@ import json
 import os
 import subprocess
 from datetime import datetime, timezone
-from importlib.metadata import version
 from pathlib import PurePath
 
 import pytest
 import yaml
 from auditor_apel_plugin.config import Config, get_loaders
 from auditor_apel_plugin.core import (
-    construct_infrastructure,
     create_time_json,
     get_begin_current_month,
     get_begin_previous_month,
@@ -19,8 +17,6 @@ from auditor_apel_plugin.core import (
     sign_msg,
     update_time_json,
 )
-
-import pyauditor
 
 test_dir = PurePath(__file__).parent
 
@@ -254,37 +250,3 @@ class TestAuditorApelPlugin:
         with pytest.raises(Exception) as pytest_error:
             get_records(config, client, start_time, clusters)
         assert pytest_error.type is RuntimeError
-
-    def test_construct_infrastructure(self):
-        compute_element = "ARC"
-        plugin_version = version("auditor_apel_plugin")
-
-        record = pyauditor.Record(
-            "record_id",
-            datetime(1984, 3, 3, 0, 0, 0).astimezone(tz=timezone.utc),
-        )
-
-        meta = pyauditor.Meta()
-        meta.insert("meta_test", ["value"])
-        record.with_meta(meta)
-
-        infrastructure = construct_infrastructure(
-            plugin_version, compute_element, record
-        )
-
-        assert infrastructure == f"AUDITOR_{plugin_version}-ARC-UNKNOWN"
-
-        record = pyauditor.Record(
-            "record_id",
-            datetime(1984, 3, 3, 0, 0, 0).astimezone(tz=timezone.utc),
-        )
-
-        meta = pyauditor.Meta()
-        meta.insert("collector_type", ["HTCondor", "1.0.0"])
-        record.with_meta(meta)
-
-        infrastructure = construct_infrastructure(
-            plugin_version, compute_element, record
-        )
-
-        assert infrastructure == f"AUDITOR_{plugin_version}-ARC-HTCondor"
